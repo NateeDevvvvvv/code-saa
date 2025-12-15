@@ -51,3 +51,4 @@ CreditsTab:AddLabel("NateeHubbb by NateeDev")
 CreditsTab:AddLabel("Universal Script Loader")
 
 OrionLib:Init()
+Full NateeHubbb loader script
