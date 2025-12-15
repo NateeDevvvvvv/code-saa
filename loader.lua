@@ -52,3 +52,4 @@ CreditsTab:AddLabel("NateeHubbb by NateeDev")
 CreditsTab:AddLabel("Universal Script Loader")
 
 OrionLib:Init()
+Replace recursive loader with full NateeHubbb script
