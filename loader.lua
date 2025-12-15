@@ -1,39 +1,19 @@
-loader.lua
-
 -- NateeHubbb Full Script
--- Universal loader with Orion UI
-
--- Load Orion Library
 local OrionLib = loadstring(game:HttpGet('https://raw.githubusercontent.com/shlexware/Orion/main/source'))()
 
--- Create the main window
 local Window = OrionLib:MakeWindow({Name = "NateeHubbb", HidePremium = false, SaveConfig = true, ConfigFolder = "NateeHubbb"})
 
 -- Player Tab
 local PlayerTab = Window:MakeTab({Name = "Player", Icon = "rbxassetid://4483345998", PremiumOnly = false})
 PlayerTab:AddSlider({
 	Name = "WalkSpeed",
-	Min = 16,
-	Max = 500,
-	Default = 16,
-	Color = Color3.fromRGB(0,255,0),
-	Increment = 1,
-	ValueName = "Speed",
-	Callback = function(Value)
-		game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = Value
-	end    
+	Min = 16, Max = 500, Default = 16, Color = Color3.fromRGB(0,255,0), Increment = 1, ValueName = "Speed",
+	Callback = function(Value) game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = Value end
 })
 PlayerTab:AddSlider({
 	Name = "JumpPower",
-	Min = 50,
-	Max = 500,
-	Default = 50,
-	Color = Color3.fromRGB(0,255,0),
-	Increment = 1,
-	ValueName = "Jump",
-	Callback = function(Value)
-		game.Players.LocalPlayer.Character.Humanoid.JumpPower = Value
-	end    
+	Min = 50, Max = 500, Default = 50, Color = Color3.fromRGB(0,255,0), Increment = 1, ValueName = "Jump",
+	Callback = function(Value) game.Players.LocalPlayer.Character.Humanoid.JumpPower = Value end
 })
 
 -- Visuals Tab
@@ -42,7 +22,6 @@ VisualsTab:AddToggle({
 	Name = "ESP (Players)",
 	Default = false,
 	Callback = function(Value)
-		-- Simple player ESP example
 		for _,player in pairs(game.Players:GetPlayers()) do
 			if player ~= game.Players.LocalPlayer then
 				if Value then
@@ -57,16 +36,14 @@ VisualsTab:AddToggle({
 				end
 			end
 		end
-	end    
+	end
 })
 
--- Blox Fruits Tab (Example)
+-- Blox Fruits Tab (placeholder)
 local BloxTab = Window:MakeTab({Name = "Blox Fruits", Icon = "rbxassetid://4483345998", PremiumOnly = false})
 BloxTab:AddButton({
-	Name = "Auto Farm (Dummy Example)",
-	Callback = function()
-		print("Blox Fruits AutoFarm started (placeholder)") -- Replace with actual farm code per game
-	end    
+	Name = "Auto Farm (Dummy)",
+	Callback = function() print("Blox Fruits AutoFarm started (placeholder)") end
 })
 
 -- Credits Tab
@@ -74,5 +51,4 @@ local CreditsTab = Window:MakeTab({Name = "Credits", Icon = "rbxassetid://448334
 CreditsTab:AddLabel("NateeHubbb by NateeDev")
 CreditsTab:AddLabel("Universal Script Loader")
 
--- Init Orion
 OrionLib:Init()
