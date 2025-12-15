@@ -1,4 +1,5 @@
-Replace recursive loader with full NateeHubbb script
+local OrionLib = loadstring(game:HttpGet('https://raw.githubusercontent.com/shlexware/Orion/main/source'))()
+
 local Window = OrionLib:MakeWindow({Name = "NateeHubbb", HidePremium = false, SaveConfig = true, ConfigFolder = "NateeHubbb"})
 
 -- Player Tab
@@ -50,4 +51,3 @@ CreditsTab:AddLabel("NateeHubbb by NateeDev")
 CreditsTab:AddLabel("Universal Script Loader")
 
 OrionLib:Init()
-Replace recursive loader with full NateeHubbb script
