@@ -1,4 +1,5 @@
-local OrionLib = loadstring(game:HttpGet('https://raw.githubusercontent.com/shlexware/Orion/main/source'))()
+-- NateeHubbb Loader Script
+local OrionLib = loadstring(game:HttpGet('https://raw.githubusercontent.com/shlexware/Orion/main/source', true))()
 
 local Window = OrionLib:MakeWindow({Name = "NateeHubbb", HidePremium = false, SaveConfig = true, ConfigFolder = "NateeHubbb"})
 
@@ -7,12 +8,20 @@ local PlayerTab = Window:MakeTab({Name = "Player", Icon = "rbxassetid://44833459
 PlayerTab:AddSlider({
 	Name = "WalkSpeed",
 	Min = 16, Max = 500, Default = 16, Color = Color3.fromRGB(0,255,0), Increment = 1, ValueName = "Speed",
-	Callback = function(Value) game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = Value end
+	Callback = function(Value)
+		if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("Humanoid") then
+			game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = Value
+		end
+	end
 })
 PlayerTab:AddSlider({
 	Name = "JumpPower",
 	Min = 50, Max = 500, Default = 50, Color = Color3.fromRGB(0,255,0), Increment = 1, ValueName = "Jump",
-	Callback = function(Value) game.Players.LocalPlayer.Character.Humanoid.JumpPower = Value end
+	Callback = function(Value)
+		if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("Humanoid") then
+			game.Players.LocalPlayer.Character.Humanoid.JumpPower = Value
+		end
+	end
 })
 
 -- Visuals Tab
@@ -22,12 +31,14 @@ VisualsTab:AddToggle({
 	Default = false,
 	Callback = function(Value)
 		for _,player in pairs(game.Players:GetPlayers()) do
-			if player ~= game.Players.LocalPlayer then
+			if player ~= game.Players.LocalPlayer and player.Character then
 				if Value then
-					local highlight = Instance.new("Highlight")
-					highlight.Name = "NateeESP"
-					highlight.Adornee = player.Character
-					highlight.Parent = game.CoreGui
+					if not player.Character:FindFirstChild("NateeESP") then
+						local highlight = Instance.new("Highlight")
+						highlight.Name = "NateeESP"
+						highlight.Adornee = player.Character
+						highlight.Parent = game.CoreGui
+					end
 				else
 					if player.Character:FindFirstChild("NateeESP") then
 						player.Character.NateeESP:Destroy()
@@ -51,4 +62,3 @@ CreditsTab:AddLabel("NateeHubbb by NateeDev")
 CreditsTab:AddLabel("Universal Script Loader")
 
 OrionLib:Init()
-
