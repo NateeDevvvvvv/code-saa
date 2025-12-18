@@ -1,64 +1,190 @@
--- NateeHubbb Loader Script
-local OrionLib = loadstring(game:HttpGet('https://raw.githubusercontent.com/shlexware/Orion/main/source', true))()
+--// NateeHubb v3 | NO KEY SYSTEM
+--// Blox Fruits Hub
+--// Orion UI | Delta Executor
 
-local Window = OrionLib:MakeWindow({Name = "NateeHubbb", HidePremium = false, SaveConfig = true, ConfigFolder = "NateeHubbb"})
+-- Load UI
+local OrionLib = loadstring(game:HttpGet("https://raw.githubusercontent.com/shlexware/Orion/main/source"))()
 
--- Player Tab
-local PlayerTab = Window:MakeTab({Name = "Player", Icon = "rbxassetid://4483345998", PremiumOnly = false})
+-- Window
+local Window = OrionLib:MakeWindow({
+	Name = "NateeHubb | Blox Fruits",
+	HidePremium = false,
+	SaveConfig = true,
+	ConfigFolder = "NateeHubb"
+})
+
+-- Services
+local Players = game:GetService("Players")
+local Workspace = game:GetService("Workspace")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local LocalPlayer = Players.LocalPlayer
+
+-- ======================
+-- SEA DETECTION
+-- ======================
+local Sea = "Unknown"
+
+pcall(function()
+	local placeId = game.PlaceId
+	if placeId == 2753915549 then
+		Sea = "First Sea"
+	elseif placeId == 4442272183 then
+		Sea = "Second Sea"
+	elseif placeId == 7449423635 then
+		Sea = "Third Sea"
+	end
+end)
+
+OrionLib:MakeNotification({
+	Name = "NateeHubb",
+	Content = "Detected: " .. Sea,
+	Time = 4
+})
+
+-- ======================
+-- PLAYER TAB
+-- ======================
+local PlayerTab = Window:MakeTab({
+	Name = "Player",
+	Icon = "rbxassetid://4483345998"
+})
+
 PlayerTab:AddSlider({
 	Name = "WalkSpeed",
-	Min = 16, Max = 500, Default = 16, Color = Color3.fromRGB(0,255,0), Increment = 1, ValueName = "Speed",
-	Callback = function(Value)
-		if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("Humanoid") then
-			game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = Value
-		end
-	end
-})
-PlayerTab:AddSlider({
-	Name = "JumpPower",
-	Min = 50, Max = 500, Default = 50, Color = Color3.fromRGB(0,255,0), Increment = 1, ValueName = "Jump",
-	Callback = function(Value)
-		if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("Humanoid") then
-			game.Players.LocalPlayer.Character.Humanoid.JumpPower = Value
+	Min = 16, Max = 300, Default = 16,
+	Callback = function(v)
+		if LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("Humanoid") then
+			LocalPlayer.Character.Humanoid.WalkSpeed = v
 		end
 	end
 })
 
--- Visuals Tab
-local VisualsTab = Window:MakeTab({Name = "Visuals", Icon = "rbxassetid://4483345998", PremiumOnly = false})
-VisualsTab:AddToggle({
-	Name = "ESP (Players)",
-	Default = false,
-	Callback = function(Value)
-		for _,player in pairs(game.Players:GetPlayers()) do
-			if player ~= game.Players.LocalPlayer and player.Character then
-				if Value then
-					if not player.Character:FindFirstChild("NateeESP") then
-						local highlight = Instance.new("Highlight")
-						highlight.Name = "NateeESP"
-						highlight.Adornee = player.Character
-						highlight.Parent = game.CoreGui
-					end
-				else
-					if player.Character:FindFirstChild("NateeESP") then
-						player.Character.NateeESP:Destroy()
-					end
-				end
+PlayerTab:AddSlider({
+	Name = "JumpPower",
+	Min = 50, Max = 300, Default = 50,
+	Callback = function(v)
+		if LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("Humanoid") then
+			LocalPlayer.Character.Humanoid.JumpPower = v
+		end
+	end
+})
+
+-- ======================
+-- VISUALS TAB
+-- ======================
+local VisualsTab = Window:MakeTab({
+	Name = "Visuals",
+	Icon = "rbxassetid://4483345998"
+})
+
+-- ===== FRUIT ESP =====
+local FruitESP = false
+
+local function ClearFruitESP()
+	for _, v in pairs(Workspace:GetChildren()) do
+		if v:IsA("Tool") and v:FindFirstChild("Handle") then
+			if v.Handle:FindFirstChild("NateeFruitESP") then
+				v.Handle.NateeFruitESP:Destroy()
 			end
 		end
 	end
+end
+
+local function ApplyFruitESP()
+	for _, fruit in pairs(Workspace:GetChildren()) do
+		if fruit:IsA("Tool") and fruit:FindFirstChild("Handle") then
+			if not fruit.Handle:FindFirstChild("NateeFruitESP") then
+				local hl = Instance.new("Highlight")
+				hl.Name = "NateeFruitESP"
+				hl.FillColor = Color3.fromRGB(255, 0, 255)
+				hl.OutlineColor = Color3.fromRGB(255, 255, 255)
+				hl.Adornee = fruit
+				hl.Parent = fruit.Handle
+			end
+		end
+	end
+end
+
+VisualsTab:AddToggle({
+	Name = "Fruit ESP",
+	Default = false,
+	Callback = function(v)
+		FruitESP = v
+		if not v then
+			ClearFruitESP()
+		end
+	end
 })
 
--- Blox Fruits Tab (placeholder)
-local BloxTab = Window:MakeTab({Name = "Blox Fruits", Icon = "rbxassetid://4483345998", PremiumOnly = false})
+task.spawn(function()
+	while task.wait(2) do
+		if FruitESP then
+			pcall(ApplyFruitESP)
+		end
+	end
+end)
+
+-- ======================
+-- BLOX FRUITS TAB
+-- ======================
+local BloxTab = Window:MakeTab({
+	Name = "Blox Fruits",
+	Icon = "rbxassetid://4483345998"
+})
+
+BloxTab:AddLabel("🌊 Current Sea: " .. Sea)
+
 BloxTab:AddButton({
-	Name = "Auto Farm (Dummy)",
-	Callback = function() print("Blox Fruits AutoFarm started (placeholder)") end
+	Name = "Auto Haki",
+	Callback = function()
+		pcall(function()
+			ReplicatedStorage.Remotes.CommF_:InvokeServer("Buso")
+		end)
+	end
 })
 
--- Credits Tab
-local CreditsTab = Window:MakeTab({Name = "Credits", Icon = "rbxassetid://4483345998", PremiumOnly = false})
-CreditsTab:AddLabel("NateeHubbb by NateeDev")
-CreditsTab:AddLabel("Universal Script Loader")
+-- ======================
+-- UI POLISH TAB
+-- ======================
+local MiscTab = Window:MakeTab({
+	Name = "Misc",
+	Icon = "rbxassetid://4483345998"
+})
 
+MiscTab:AddButton({
+	Name = "Anti AFK",
+	Callback = function()
+		for _, v in pairs(getconnections(LocalPlayer.Idled)) do
+			v:Disable()
+		end
+		OrionLib:MakeNotification({
+			Name = "NateeHubb",
+			Content = "Anti-AFK Enabled",
+			Time = 3
+		})
+	end
+})
+
+MiscTab:AddButton({
+	Name = "Rejoin Server",
+	Callback = function()
+		game:GetService("TeleportService"):Teleport(game.PlaceId, LocalPlayer)
+	end
+})
+
+-- ======================
+-- CREDITS TAB
+-- ======================
+local CreditsTab = Window:MakeTab({
+	Name = "Credits",
+	Icon = "rbxassetid://4483345998"
+})
+
+CreditsTab:AddLabel("NateeHubb v3")
+CreditsTab:AddLabel("By NateeDev")
+CreditsTab:AddLabel("No Key System")
+CreditsTab:AddLabel("Delta Executor")
+CreditsTab:AddLabel("Orion UI")
+
+-- Init
 OrionLib:Init()
